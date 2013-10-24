@@ -24,11 +24,13 @@ scout_ruby      = node["scout_agent"]["rvm_ruby"]
 scout_gemset    = node["scout_agent"]["rvm_gemset"]
 scout_rvm_env   = "#{scout_ruby}@#{scout_gemset}"
 scout_version   = node["scout_agent"]["version"]
-scout_node_name = node["scout_agent"]["node_name"]
+scout_node_name = node["scout_agent"]["node_name"] || node.name
+scout_roles     = node["scout_agent"]["roles"] || []
 
 scout_command  = "rvm #{scout_rvm_env} exec scout"
 scout_command += %( --name="#{scout_node_name}") unless scout_node_name.empty?
 scout_command += " #{scout_key}"
+scout_command += %( --roles "#{scout_roles.map(&:to_s).join(',')}") unless scout_roles.empty?
 
 
 # create user and group
@@ -64,7 +66,7 @@ end
 # schedule scout agent to run via cron
 cron "scout_cron_run" do
   user scout_user
-  command "/bin/bash -l -c 'source /etc/profile.d/rvm.sh && #{scout_command}'"
+  command "/bin/bash -l -c 'source /etc/profile.d/rvm.sh && rvm use #{scout_rvm_env} && #{scout_command}'"
 end
 
 # install additional gems required for plugins
