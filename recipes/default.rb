@@ -61,6 +61,13 @@ rvm_shell "scout_initial_run" do
   ruby_string scout_rvm_env
   cwd         scout_home
   code        scout_command
+  not_if { node[:scout_agent][:initial_done] }
+end
+
+ruby_block "scout_initial_run_done" do
+  block do
+    node[:scout_agent][:initial_done] = true
+  end
 end
 
 # schedule scout agent to run via cron
