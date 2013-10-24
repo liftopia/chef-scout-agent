@@ -66,7 +66,7 @@ end
 
 ruby_block "scout_initial_run_done" do
   block do
-    node[:scout_agent][:initial_done] = true
+    node.set[:scout_agent][:initial_done] = true
   end
 end
 
