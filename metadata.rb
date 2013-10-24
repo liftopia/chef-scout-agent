@@ -4,7 +4,7 @@ maintainer_email "github@phlippers.net"
 license          "MIT"
 description      "Setup Scount Server Monitoring Agent"
 long_description IO.read(File.join(File.dirname(__FILE__), "README.md"))
-version          "1.0.3"
+version          "1.0.4"
 
 recipe "scout-agent", "Install and configure scout-agent"
 
